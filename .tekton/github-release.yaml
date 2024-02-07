@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: prepare-release
@@ -9,19 +9,14 @@ spec:
 
   params:
     - name: version
-      description: Version of the release
       type: string
     - name: release-notes
-      description: Release notes for the version
       type: string
     - name: branch
-      description: Git branch for the release
       type: string
     - name: repo
-      description: Git repository for the release
       type: string
     - name: rel_ver
-      description: Custom version of release
       type: string
 
   steps:

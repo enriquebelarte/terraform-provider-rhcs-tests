@@ -106,6 +106,7 @@ spec:
       description: Image tag expiration time, time values could be something like
         1h, 2d, 3w for hours, days, and weeks, respectively.
       name: image-expires-after
+      type: string
     - default: "false"
       description: Build a source image.
       name: build-source-image
@@ -372,24 +373,26 @@ spec:
       - name: IMAGE_DIGEST
         value: $(tasks.build-container.results.IMAGE_DIGEST)
       - name: version
-        value: 1.0
+        value: "1.0"
       - name: release-notes
         type: string
       - name: branch
         type: string
       - name: repo
-        value: enriquebelarte/terraform-provider-rhcs-tests
+        value: "enriquebelarte/terraform-provider-rhcs-tests"
       - name: rel_ver
-        value: 1.0
+        value: "1.0"
       runAfter:
       - build-container
       taskRef:
         params:
-        - name: name
-          value: prepare-release
-        - name: kind
-          value: task
-        resolver: git
+          - name: url
+            value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests.git
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: .tekton/github-release.yaml            
+        resolver: git 
       when:
       - input: $(params.skip-checks)
         operator: in
@@ -407,25 +410,27 @@ spec:
       - name: IMAGE_DIGEST
         value: $(tasks.build-container.results.IMAGE_DIGEST)
       - name: version
-        value: 1.0
+        value: "1.0"
       - name: release-notes
         value: "Release notes for $(params.rel_ver)"
       - name: branch
         type: string
       - name: repo
-        value: enriquebelarte/terraform-provider-rhcs-tests
+        value: "enriquebelarte/terraform-provider-rhcs-tests"
       - name: rel_ver
-        value: 1.0
+        value: "1.0"
       runAfter:
       - prepare-release
       taskRef:
         params:
-        - name: name
-          value: github-upload-release
-        - name: kind
-          value: task
-        resolver: git
-      when:
+          - name: url
+            value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests.git
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: .tekton/publish-release.yaml            
+        resolver: git 
+        when:
       - input: $(params.skip-checks)
         operator: in
         values:
@@ -453,5 +458,5 @@ spec:
       status: {}
   - name: git-auth
     secret:
-      secretName: '{{ git_auth_secret }}'
+      secretName: '{{git_auth_secret}}'
 status: {}
