@@ -31,11 +31,11 @@ spec:
         # We will add .sig file when we have the sigining step done
         #gh release create $REL_VER *.zip *.json *.sig --repo $REPO
       env:
-        #- name: GH_TOKEN
-        #  valueFrom:
-        #    secretKeyRef:
-        #      name: gh-secret-ebelarte-tf-provider-rhcs
-        #      key: token
+        - name: GH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: gh-secret-ebelarte-tf-provider-rhcs
+              key: token
         - name: VERSION
           value: $(params.version)
         - name: RELEASE_NOTES
