@@ -14,8 +14,8 @@ spec:
       image: ubi9/go-toolset:latest
       script: |
         echo "PWD = $(pwd)"
-        git config --global --add safe.directory /workspace/releases/source
-        ls -l /workspace/releases/source
+        ls -l
+        git config --global --add safe.directory . 
         make prepare_release version=$REL_VER
       env:
         - name: REL_VER
