@@ -367,16 +367,6 @@ spec:
 
     - name: prepare-release
       params:
-      - name: IMAGE_URL
-        value: $(tasks.build-container.results.IMAGE_URL)
-      - name: IMAGE_DIGEST
-        value: $(tasks.build-container.results.IMAGE_DIGEST)
-      - name: version
-        value: "1.0"
-      - name: release-notes
-        type: string
-      - name: branch
-        type: string
       - name: repo
         value: "enriquebelarte/terraform-provider-rhcs-tests"
       - name: rel_ver
