@@ -1,6 +1,8 @@
 #!/bin/bash
-archs=(amd64 arm64)
-oses=(linux darwin windows)
+#archs=(amd64 arm64)
+#oses=(linux darwin windows)
+archs=(amd64)
+oses=(linux)
 
 #REL_VER=$(git describe --tags --abbrev=0 | sed "s/v//")
 REL_VER="1.0"
