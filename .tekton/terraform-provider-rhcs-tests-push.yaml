@@ -389,42 +389,32 @@ spec:
       - name: releases
         workspace: workspace   
 
-          #    - name: github-upload-release
-          #      params:
-          #      - name: IMAGE_URL
-          #        value: $(tasks.build-container.results.IMAGE_URL)
-          #      - name: IMAGE_DIGEST
-          #        value: $(tasks.build-container.results.IMAGE_DIGEST)
-          #      - name: version
-          #        value: "1.0"
-          #      - name: release-notes
-          #        value: "Release notes for $(params.rel_ver)"
-          #      - name: branch
-          #        type: string
-          #      - name: repo
-          #        value: "enriquebelarte/terraform-provider-rhcs-tests"
-          #      - name: rel_ver
-          #        value: "1.0"
-          #      runAfter:
-          #      - prepare-release
-          #      taskRef:
-          #        params:
-          #          - name: url
-          #            value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests.git
-          #          - name: revision
-          #            value: main
-          #          - name: pathInRepo
-          #            value: .tekton/publish-release.yaml            
-          #        resolver: git 
-          #      when:
-          #      - input: $(params.skip-checks)
-          #        operator: in
-          #        values:
-          #        - "false"
-          #      workspaces:
-          #      - name: gh-upload
-          #        workspace: workspace
-          #
+   - name: github-upload-release
+     params:
+     - name: repo
+       value: "enriquebelarte/terraform-provider-rhcs-tests"
+     - name: rel_ver
+       value: "1.0"
+     runAfter:
+     - prepare-release
+     taskRef:
+       params:
+         - name: url
+           value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests.git
+         - name: revision
+           value: main
+         - name: pathInRepo
+           value: .tekton/publish-release.yaml            
+       resolver: git 
+     when:
+     - input: $(params.skip-checks)
+       operator: in
+       values:
+       - "false"
+     workspaces:
+     - name: gh-upload
+       workspace: workspace
+
 
 
     workspaces:
