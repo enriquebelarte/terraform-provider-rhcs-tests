@@ -367,6 +367,9 @@ spec:
         - "false"
 
     - name: prepare-release
+      params:
+      - name: rel_ver
+        value: 1.0
       runAfter:
       - build-container
       taskRef:
