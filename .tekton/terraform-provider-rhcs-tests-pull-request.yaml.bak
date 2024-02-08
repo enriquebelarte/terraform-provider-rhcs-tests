@@ -6,14 +6,14 @@ metadata:
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
-    pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
       == "main"
   creationTimestamp: null
   labels:
     appstudio.openshift.io/application: terraform-provider-rhcs-tests
     appstudio.openshift.io/component: terraform-provider-rhcs-tests
     pipelines.appstudio.openshift.io/type: build
-  name: terraform-provider-rhcs-tests-on-push
+  name: terraform-provider-rhcs-tests-on-pull-request
   namespace: ebelarte-tenant
 spec:
   params:
@@ -106,6 +106,7 @@ spec:
       description: Image tag expiration time, time values could be something like
         1h, 2d, 3w for hours, days, and weeks, respectively.
       name: image-expires-after
+      type: string
     - default: "false"
       description: Build a source image.
       name: build-source-image
@@ -217,7 +218,7 @@ spec:
         - name: name
           value: buildah
         - name: bundle
-          value: quay.io/redhat-appstudio-tekton-catalog/task-buildah:0.1@sha256:5db20956b51725f1b50f02d21413cd7d0c082e4f51364c54e51f78dfa75893a4
+          value: quay.io/redhat-appstudio-tekton-catalog/task-buildah:0.1@sha256:1ee1d570b3cf7feaf85a22c828076e798a57266ffcfea41c1aa0e9f85b0a885a
         - name: kind
           value: task
         resolver: bundles
@@ -367,10 +368,20 @@ spec:
 
     - name: prepare-release
       params:
+      - name: IMAGE_URL
+        value: $(tasks.build-container.results.IMAGE_URL)
+      - name: IMAGE_DIGEST
+        value: $(tasks.build-container.results.IMAGE_DIGEST)
+      - name: version
+        value: 1.0
+      - name: release-notes
+        type: string
+      - name: branch
+        type: string
       - name: repo
-        value: "enriquebelarte/terraform-provider-rhcs-tests"
+        value: enriquebelarte/terraform-provider-rhcs-tests
       - name: rel_ver
-        value: "1.0"
+        value: 1.0
       runAfter:
       - build-container
       taskRef:
@@ -399,15 +410,15 @@ spec:
       - name: IMAGE_DIGEST
         value: $(tasks.build-container.results.IMAGE_DIGEST)
       - name: version
-        value: "1.0"
+        value: 1.0
       - name: release-notes
         value: "Release notes for $(params.rel_ver)"
       - name: branch
         type: string
       - name: repo
-        value: "enriquebelarte/terraform-provider-rhcs-tests"
+        value: enriquebelarte/terraform-provider-rhcs-tests
       - name: rel_ver
-        value: "1.0"
+        value: 1.0
       runAfter:
       - prepare-release
       taskRef:
@@ -428,8 +439,6 @@ spec:
       - name: gh-upload
         workspace: workspace
 
-
-
     workspaces:
     - name: workspace
     - name: git-auth
@@ -449,5 +458,5 @@ spec:
       status: {}
   - name: git-auth
     secret:
-      secretName: '{{ git_auth_secret }}'
+      secretName: '{{git_auth_secret}}'
 status: {}

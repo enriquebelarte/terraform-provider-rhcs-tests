@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: github-upload-release
@@ -30,7 +30,6 @@ spec:
         gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO
         # We will add .sig file when we have the sigining step done
         #gh release create $REL_VER *.zip *.json *.sig --repo $REPO
-
       env:
         - name: GH_TOKEN
           valueFrom:
