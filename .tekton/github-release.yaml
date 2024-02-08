@@ -13,9 +13,9 @@ spec:
     - name: prepare-release
       image: ubi9/go-toolset:latest
       script: |
-        git config --global --add safe.directory /workspace/releases/sources
-        ls -l /workspace/releases/sources
-        make -C /workspace/releases/sources prepare_release version=$REL_VER
+        git config --global --add safe.directory /workspace/releases/source
+        ls -l /workspace/releases/source
+        make -C /workspace/releases/source prepare_release version=$REL_VER
       env:
         - name: REL_VER
           value: $(params.rel_ver)
