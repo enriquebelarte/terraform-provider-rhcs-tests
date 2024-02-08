@@ -15,7 +15,8 @@ spec:
       script: |
         echo "PWD = $(pwd)"
         git config --global --add safe.directory /workspace/releases/source
-        make -C /workspace/releases/source prepare_release version=$REL_VER
+        ls -l /workspace/releases/source
+        make prepare_release version=$REL_VER
       env:
         - name: REL_VER
           value: $(params.rel_ver)
