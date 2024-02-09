@@ -20,39 +20,39 @@ spec:
       value: 46731356
   steps:
   - name: generate-gh-token
-     image: ubi9:latest
-     script: |
-     #!/usr/bin/env bash
-     GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r '.tag_name') && \
-     curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2 -C /usr/local/bin && \
-     jwt=$(gh auth github-app-create-jwt --app-id $GH_APP_ID --key ${GH_KEY})
-     token=$(gh auth github-app --jwt "$jwt" --installation-id $GH_INS_ID --only-token)
-      echo $token > /workspace/github_token
-     env:
-       - name: GH_APP_ID
-         value: $(params.githubAppId)
-       - name: GH_INS_ID
-         value: $(params.githubAppInstallationId)
-       - name: GH_KEY
-         valueFrom:
-           secretKeyRef:
-             name: github-app-key
-             key: key
+    image: ubi9:latest
+    script: |
+    #!/usr/bin/env bash
+    GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r '.tag_name') && \
+    curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2 -C /usr/local/bin && \
+    jwt=$(gh auth github-app-create-jwt --app-id $GH_APP_ID --key ${GH_KEY})
+    token=$(gh auth github-app --jwt "$jwt" --installation-id $GH_INS_ID --only-token)
+     echo $token > /workspace/github_token
+    env:
+      - name: GH_APP_ID
+        value: $(params.githubAppId)
+      - name: GH_INS_ID
+        value: $(params.githubAppInstallationId)
+      - name: GH_KEY
+        valueFrom:
+          secretKeyRef:
+            name: github-app-key
+            key: key
 
   - name: create-release-from-binaries
     image: ubi9:latest
     script: |
-      #!/usr/bin/env bash
-      curl -L https://github.com/cli/cli/releases/download/v2.32.1/gh_2.32.1_linux_amd64.tar.gz --output gh_2.32.1_linux_amd64.tar.gz && 
-      tar -zvxf gh_2.32.1_linux_amd64.tar.gz 
-      mv gh_2.32.1_linux_amd64/bin/gh /bin/gh 
-      chmod +x /bin/gh 
-      token=$(cat /workspace/github_token)
-      export GITHUB_TOKEN=$token
-      cd /workspace/releases 
-      ls -l 
-      gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO
-      rm -rf /workspace/github_token
+    #!/usr/bin/env bash
+    curl -L https://github.com/cli/cli/releases/download/v2.32.1/gh_2.32.1_linux_amd64.tar.gz --output gh_2.32.1_linux_amd64.tar.gz && 
+    tar -zvxf gh_2.32.1_linux_amd64.tar.gz 
+    mv gh_2.32.1_linux_amd64/bin/gh /bin/gh 
+    chmod +x /bin/gh 
+    token=$(cat /workspace/github_token)
+    export GITHUB_TOKEN=$token
+    cd /workspace/releases 
+    ls -l 
+    gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO
+    rm -rf /workspace/github_token
     env:
       - name: REPO
         value: $(params.repo)
