@@ -397,8 +397,11 @@ spec:
         value: 1.0
       - name: repo
         value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests
-      - name: githubAppId
-      - name: githubAppInstallationId
+    - name: githubAppId
+      value: 811192
+    - name: githubAppInstallationId
+      value: 46731356
+          
       runAfter:
       - prepare-release
       taskRef:
