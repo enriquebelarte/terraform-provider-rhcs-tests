@@ -389,33 +389,29 @@ spec:
       - name: releases
         workspace: workspace   
 
-   - name: github-upload-release
-     params:
-     - name: repo
-       value: enriquebelarte/terraform-provider-rhcs-tests
-     - name: rel_ver
-       value: 1.0
-     runAfter:
-     - prepare-release
-     taskRef:
-       params:
-         - name: url
-           value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests.git
-         - name: revision
-           value: main
-         - name: pathInRepo
-           value: .tekton/publish-release.yaml            
-       resolver: git 
-     when:
-     - input: $(params.skip-checks)
-       operator: in
-       values:
-       - "false"
-     workspaces:
-     - name: gh-upload
-       workspace: workspace
-
-
+    - name: github-upload-release
+      params:
+      runAfter:
+      - prepare-release
+      taskRef:
+        params:
+          - name: url
+            value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests.git
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: .tekton/publish-release.yaml            
+        resolver: git 
+      when:
+      - input: $(params.skip-checks)
+        operator: in
+        values:
+        - "false"
+      workspaces:
+      - name: gh-upload
+        workspace: workspace
+ 
+  
     workspaces:
     - name: workspace
     - name: git-auth

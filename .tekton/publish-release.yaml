@@ -5,7 +5,6 @@ metadata:
 spec:
   workspaces:
   - name: gh-upload
-    workspace: workspace
   params:
     - name: repo
       type: string
