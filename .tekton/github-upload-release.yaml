@@ -11,13 +11,13 @@ spec:
       value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests
     - name: rel_ver
       type: string
-      value: 1.0
+      value: "1.0"
     - name: githubAppId
       type: string
-      value: 811192
+      value: "811192"
     - name: githubAppInstallationId
       type: string
-      value: 46731356
+      value: "46731356"
   steps:
   - name: generate-gh-token
     image: ubi9:latest
