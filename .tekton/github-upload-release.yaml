@@ -22,9 +22,10 @@ spec:
     - name: generate-gh-token
       image: ubi9:latest
       script: |
-        sudo curl -sL -o /usr/local/bin/jq  "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64"
+        ENV PATH="$PATH:/tmp"
+        curl -sL -o /tmp/jq  "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64"
         GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r '.tag_name') 
-        sudo curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2 -C /usr/local/bin 
+        curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2 -C /tmp/ 
         jwt=$(gh auth github-app-create-jwt --app-id $GH_APP_ID --key ${GH_KEY})
         token=$(gh auth github-app --jwt "$jwt" --installation-id $GH_INS_ID --only-token)
         echo $token > /workspace/github_token
