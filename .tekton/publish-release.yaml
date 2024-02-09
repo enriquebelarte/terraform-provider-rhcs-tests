@@ -46,11 +46,6 @@ spec:
         export GITHUB_TOKEN=$token
         cd /workspace/releases 
         ls -l 
-        gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO
+        gh release create ${{inputs.params.repo}} *.zip *.json *SHA256SUMS --repo ${{inputs.params.rel_ver}}
         rm -rf /workspace/github_token
-      env:
-        - name: REPO
-          value: $(params.repo)
-        - name: REL_VER
-          value: $(params.rel_ver)
 
