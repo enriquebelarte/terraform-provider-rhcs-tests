@@ -25,10 +25,10 @@ spec:
         pwd
         ls -l
         mkdir /workspace/gh-upload/tools
-        PATH=$PATH:/workspace/gh-upload
-        curl -sL "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64" --output /workspace/gh-upload/jq
+        PATH=$PATH:/workspace/gh-upload/ttols
+        curl -sL "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64" --output /workspace/gh-upload/tools/jq
         GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r '.tag_name') 
-        curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2 -C /workspace/gh-upload/gh
+        curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2 -C /workspace/gh-upload/tools/gh
         jwt=$(gh auth github-app-create-jwt --app-id $GH_APP_ID --key ${GH_KEY})
         token=$(gh auth github-app --jwt "$jwt" --installation-id $GH_INS_ID --only-token)
         echo $token > /workspace/github_token
