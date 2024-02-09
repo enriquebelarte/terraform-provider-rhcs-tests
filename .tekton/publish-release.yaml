@@ -25,10 +25,14 @@ spec:
       #!/usr/bin/env bash
       GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r '.tag_name') && \
       curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2 -C /usr/local/bin && \
-      jwt=$(gh auth github-app-create-jwt --app-id ${{inputs.params.githubAppId}} --key ${GH_KEY})
-      token=$(gh auth github-app --jwt "$jwt" --installation-id ${{inputs.params.githubAppInstallationId}} --only-token)
+      jwt=$(gh auth github-app-create-jwt --app-id $GH_APP_ID --key ${GH_KEY})
+      token=$(gh auth github-app --jwt "$jwt" --installation-id $GH_INS_ID --only-token)
        echo $token > /workspace/github_token
       env:
+        - name: GH_APP_ID
+          value: $(params.githubAppId)
+        - name: GH_INS_ID
+          value: $(params.githubAppInstallationId)
         - name: GH_KEY
           valueFrom:
             secretKeyRef:
