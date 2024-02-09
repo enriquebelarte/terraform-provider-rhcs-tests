@@ -16,6 +16,8 @@ spec:
       type: string
       value: 811192
     - name: githubAppInstallationId
+      type: string
+      value: 46731356
   steps:
     - name: generate-gh-token
       image: ubi9:latest
@@ -32,7 +34,6 @@ spec:
             secretKeyRef:
               name: github-app-key
               key: key
-
 
     - name: create-release-from-binaries
       image: ubi9:latest
