@@ -373,12 +373,14 @@ spec:
       - build-container
       taskRef:
         params:
+          - name: name
+            value: prepare-release
           - name: url
             value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests.git
           - name: revision
             value: main
           - name: pathInRepo
-            value: .tekton/github-release.yaml
+            value: .tekton/prepare-release.yaml
         resolver: git
       when:
       - input: $(params.skip-checks)
@@ -399,12 +401,14 @@ spec:
       - prepare-release
       taskRef:
         params:
+          - name: name
+            value: github-upload-release
           - name: url
             value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests.git
           - name: revision
             value: main
           - name: pathInRepo
-            value: .tekton/publish-release.yaml            
+            value: .tekton/github-upload-release.yaml            
         resolver: git 
       when:
       - input: $(params.skip-checks)
