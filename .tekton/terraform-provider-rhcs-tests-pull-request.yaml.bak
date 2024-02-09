@@ -395,7 +395,6 @@ spec:
        value: enriquebelarte/terraform-provider-rhcs-tests
      - name: rel_ver
        value: 1.0
-
      runAfter:
      - prepare-release
      taskRef:
