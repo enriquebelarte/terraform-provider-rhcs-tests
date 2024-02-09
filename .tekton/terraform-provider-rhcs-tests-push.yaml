@@ -392,9 +392,10 @@ spec:
    - name: github-upload-release
      params:
      - name: repo
-       value: "enriquebelarte/terraform-provider-rhcs-tests"
+       value: enriquebelarte/terraform-provider-rhcs-tests
      - name: rel_ver
-       value: "1.0"
+       value: 1.0
+
      runAfter:
      - prepare-release
      taskRef:
