@@ -30,10 +30,10 @@ spec:
         GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | ./jq -r '.tag_name') 
         curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2  
         chmod +x gh
-        echo ${GH_KEY} > gh_key
+        echo ${GH_KEY} 
         cp /workspace/gh-upload/source/build/generate_jwt .
         chmod +x generate_jwt
-        ./generate_jwt $GH_APP_ID gh_key
+        pem=${GH_KEY} ./generate_jwt $GH_APP_ID
         # get the token by POSTING to the url:
         github_api_url="https://api.github.com/app/installations/${GH_INS_ID}/access_tokens"
         JWT=$(cat myjwt)

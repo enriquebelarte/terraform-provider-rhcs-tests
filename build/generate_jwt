@@ -3,7 +3,7 @@
 set -o pipefail
 
 app_id=$1 # App ID as first argument
-pem=$( cat $2 ) # file path of the private key as second argument
+#pem=$( cat $2 ) # file path of the private key as second argument
 
 now=$(date +%s)
 iat=$((${now} - 60)) # Issues 60 seconds in the past
