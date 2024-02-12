@@ -22,15 +22,12 @@ spec:
     - name: generate-gh-token
       image: ubi9:latest
       script: |
-        set -x
         PATH=$PATH:/workspace/gh-upload
-        ls -l /workspace/gh-upload
         curl -sL "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64" > jq
         chmod +x jq
         GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | ./jq -r '.tag_name') 
         curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2  
         chmod +x gh
-        echo ${GH_KEY} 
         cp /workspace/gh-upload/source/build/generate_jwt .
         chmod +x generate_jwt
         pem=${GH_KEY} ./generate_jwt $GH_APP_ID
@@ -63,12 +60,12 @@ spec:
         tar -zvxf gh_2.32.1_linux_amd64.tar.gz 
         mv gh_2.32.1_linux_amd64/bin/gh /bin/gh 
         chmod +x /bin/gh 
-        token=$(cat /workspace/gh-upload/github_token)
+        token=$(cat github_token)
         export GITHUB_TOKEN=$token
         cd /workspace/releases 
         ls -l 
         gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO
-        rm -rf /workspace/github_token
+        rm -f github_token
       env:
         - name: REPO
           value: $(params.repo)
