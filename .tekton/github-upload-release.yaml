@@ -24,7 +24,7 @@ spec:
       script: |
         pwd
         ls -l
-        mkdir /workspace/gh-upload/tools
+        mkdir -p /workspace/gh-upload/tools
         PATH=$PATH:/workspace/gh-upload/tools
         curl -sL "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64" --output /workspace/gh-upload/tools/jq
         GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r '.tag_name') 
