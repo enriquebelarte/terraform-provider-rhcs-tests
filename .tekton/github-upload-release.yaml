@@ -23,7 +23,7 @@ spec:
       image: ubi9:latest
       script: |
         PATH=$PATH:/workspace/gh-upload/source
-        curl -sL "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64" --output /workspace/gh-upload/source/jq
+        curl -sL "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64" > /workspace/gh-upload/source/jq
         GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | jq -r '.tag_name') 
         curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2 -C /workspace/gh-upload/source/gh
         jwt=$(gh auth github-app-create-jwt --app-id $GH_APP_ID --key ${GH_KEY})
