@@ -34,14 +34,13 @@ spec:
         # get the token by POSTING to the url:
         github_api_url="https://api.github.com/app/installations/${GH_INS_ID}/access_tokens"
         JWT=$(cat myjwt)
-        echo "Calling [${github_api_url}], result:"
         tokens=$(curl -s -X POST \
             -H "Authorization: Bearer ${JWT}" \
             -H "Accept: application/vnd.github.v3+json" \
             "${github_api_url}" )
-        echo "Token info: $tokens"
         token=$(echo "$tokens" | ./jq -r '.token')
-        echo $token > github_token          
+        echo $token > github_token         
+        pwd 
       env:
         - name: GH_APP_ID
           value: $(params.githubAppId)
@@ -60,6 +59,7 @@ spec:
         tar -zvxf gh_2.32.1_linux_amd64.tar.gz 
         mv gh_2.32.1_linux_amd64/bin/gh /bin/gh 
         chmod +x /bin/gh 
+        pwd
         token=$(cat github_token)
         export GITHUB_TOKEN=$token
         cd /workspace/releases 
