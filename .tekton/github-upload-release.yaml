@@ -39,7 +39,7 @@ spec:
             -H "Accept: application/vnd.github.v3+json" \
             "${github_api_url}" )
         token=$(echo "$tokens" | ./jq -r '.token')
-        echo $token > github_token         
+        echo $token > /workspace/gh-upload/files/github_token         
         pwd 
       env:
         - name: GH_APP_ID
@@ -60,12 +60,11 @@ spec:
         mv gh_2.32.1_linux_amd64/bin/gh /bin/gh 
         chmod +x /bin/gh 
         pwd
-        token=$(cat github_token)
+        token=$(cat /workspace/gh-upload/files/github_token)
         export GITHUB_TOKEN=$token
         cd /workspace/releases 
-        ls -l 
         gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO
-        rm -f github_token
+        rm -f /workspace/gh-upload/files/github_token
       env:
         - name: REPO
           value: $(params.repo)
