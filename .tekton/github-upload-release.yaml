@@ -63,7 +63,8 @@ spec:
         pwd
         token=$(cat /workspace/gh-upload/files/github_token)
         export GITHUB_TOKEN=$token
-        cd /workspace/releases 
+        cd /workspace/releases
+        ls -l 
         gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO
         rm -f /workspace/gh-upload/files/github_token
       env:
