@@ -423,6 +423,8 @@ spec:
       workspaces:
       - name: gh-upload
         workspace: workspace
+      - name: releases
+        workspace: workspace
  
 
     workspaces:
