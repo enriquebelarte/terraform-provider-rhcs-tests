@@ -35,7 +35,7 @@ spec:
         chmod +x generate_jwt
         ./generate_jwt $GH_APP_ID gh_key
         # get the token by POSTING to the url:
-        github_api_url="https://api.github.com/app/installations/${githubAppInstallationId}/access_tokens"
+        github_api_url="https://api.github.com/app/installations/${GH_INS_ID}/access_tokens"
         JWT=$(cat myjwt)
         echo "Calling [${github_api_url}], result:"
         tokens=$(curl -s -X POST \
