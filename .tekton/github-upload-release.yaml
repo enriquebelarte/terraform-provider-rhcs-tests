@@ -22,7 +22,6 @@ spec:
     - name: generate-gh-token
       image: ubi9:latest
       script: |
-        PATH=$PATH:/workspace/gh-upload
         curl -sL "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64" > jq
         chmod +x jq
         GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | ./jq -r '.tag_name') 
@@ -39,6 +38,7 @@ spec:
             -H "Accept: application/vnd.github.v3+json" \
             "${github_api_url}" )
         token=$(echo "$tokens" | ./jq -r '.token')
+        mkdir -p /workspace/gh-upload/files
         echo $token > /workspace/gh-upload/files/github_token         
         pwd 
       env:
