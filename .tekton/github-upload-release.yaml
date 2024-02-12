@@ -29,7 +29,9 @@ spec:
         GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | ./jq -r '.tag_name') 
         curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2  
         chmod +x gh
-        ./generate_jwt.sh $GH_APP_ID ${GH_KEY}
+        echo ${GH_KEY} > gh_key
+        chmod +x generate_jwt.sh
+        ./generate_jwt.sh $GH_APP_ID gh_key
         #jwt=$(./gh auth github-app-create-jwt --app-id $GH_APP_ID --key ${GH_KEY})
         token=$(./gh auth github-app --jwt "$JWT" --installation-id $GH_INS_ID --only-token)
         echo $token > github_token
