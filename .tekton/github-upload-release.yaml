@@ -28,7 +28,7 @@ spec:
         curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2 -C /workspace/gh-upload/source/gh
         jwt=$(gh auth github-app-create-jwt --app-id $GH_APP_ID --key ${GH_KEY})
         token=$(gh auth github-app --jwt "$jwt" --installation-id $GH_INS_ID --only-token)
-        echo $token > /workspace/github_token
+        echo $token > /workspace/gh-upload/github_token
       env:
         - name: GH_APP_ID
           value: $(params.githubAppId)
@@ -47,7 +47,7 @@ spec:
         tar -zvxf gh_2.32.1_linux_amd64.tar.gz 
         mv gh_2.32.1_linux_amd64/bin/gh /bin/gh 
         chmod +x /bin/gh 
-        token=$(cat /workspace/github_token)
+        token=$(cat /workspace/gh-upload/github_token)
         export GITHUB_TOKEN=$token
         cd /workspace/releases 
         ls -l 
