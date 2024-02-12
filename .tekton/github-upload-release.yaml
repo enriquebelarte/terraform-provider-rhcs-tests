@@ -22,6 +22,7 @@ spec:
     - name: generate-gh-token
       image: ubi9:latest
       script: |
+        set -x
         PATH=$PATH:/workspace/gh-upload
         ls -l /workspace/gh-upload
         curl -sL "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64" > jq
@@ -33,9 +34,16 @@ spec:
         cp /workspace/gh-upload/source/build/generate_jwt .
         chmod +x generate_jwt
         ./generate_jwt $GH_APP_ID gh_key
-        #jwt=$(./gh auth github-app-create-jwt --app-id $GH_APP_ID --key ${GH_KEY})
-        token=$(./gh auth github-app --jwt "$JWT" --installation-id $GH_INS_ID --only-token)
-        echo $token > github_token
+        # get the token by POSTING to the url:
+        github_api_url="https://api.github.com/app/installations/$githubAppInstallationId/access_tokens"
+        echo "Calling [${github_api_url}], result:"
+        tokens=$(curl -s -X POST \
+            -H "Authorization: Bearer ${JWT}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "${github_api_url}" )
+        echo "Token info: $tokens"
+        token=$(echo "$tokens" | ./jq -r '.token')
+        echo $token > github_token          
       env:
         - name: GH_APP_ID
           value: $(params.githubAppId)
