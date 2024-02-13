@@ -9,8 +9,6 @@ spec:
     - name: repo
       type: string
       value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests
-    - name: rel_ver
-      type: string
     - name: githubAppId
       type: string
       value: 811192
