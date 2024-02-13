@@ -378,7 +378,7 @@ spec:
         value: 46731356
             
       runAfter:
-      - prepare-release
+      - build-container 
       taskRef:
         params:
           - name: name
