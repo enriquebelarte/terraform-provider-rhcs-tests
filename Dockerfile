@@ -3,7 +3,7 @@ COPY . .
 
 ENV GOFLAGS=-buildvcs=false
 RUN git config --global --add safe.directory /opt/app-root/src && \
-    make prepare_release && export REL_VER
+    make prepare_release
 ENV REL_VER=$REL_VER
 FROM registry.access.redhat.com/ubi9/ubi-micro:latest
 LABEL description="Terraform Provider RHCS"
