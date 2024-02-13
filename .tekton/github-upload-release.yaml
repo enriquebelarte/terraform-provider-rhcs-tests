@@ -18,6 +18,7 @@ spec:
     - name: githubAppInstallationId
       type: string
       value: 46731356
+    - name: IMAGE_URL
   steps:
     - name: generate-gh-token
       image: ubi9:latest
@@ -51,7 +52,10 @@ spec:
             secretKeyRef:
               name: github-app-key
               key: key
-  
+    - name: copy-binaries-from-builder
+      image: $(params.IMAGE_URL)
+      script: |
+         ls -lR /opt/
     - name: create-release-from-binaries
       image: ubi9:latest
       script: |
