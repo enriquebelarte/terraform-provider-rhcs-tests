@@ -68,7 +68,7 @@ spec:
         token=$(cat /workspace/releases/files/github_token)
         export GITHUB_TOKEN=$token
         cd /workspace/releases/binaries
-        gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO
+        gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO --title "Release $REL_VER"
         rm -f /workspace/releases/files/github_token
       env:
         - name: REPO
