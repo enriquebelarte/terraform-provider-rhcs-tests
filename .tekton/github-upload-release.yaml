@@ -4,7 +4,6 @@ metadata:
   name: github-upload-release
 spec:
   workspaces:
-  - name: gh-upload
   - name: releases
   params:
     - name: repo
@@ -28,7 +27,7 @@ spec:
         GH_VERSION=$(curl -s https://api.github.com/repos/cli/cli/releases/latest | ./jq -r '.tag_name') 
         curl -sL "https://github.com/cli/cli/releases/download/$GH_VERSION/gh_${GH_VERSION#v}_linux_amd64.tar.gz" | tar xz --strip-components=2  
         chmod +x gh
-        cp /workspace/gh-upload/source/build/generate_jwt .
+        cp /workspace/releases/source/build/generate_jwt .
         chmod +x generate_jwt
         pem=${GH_KEY} ./generate_jwt $GH_APP_ID
         # get the token by POSTING to the url:
@@ -39,8 +38,8 @@ spec:
             -H "Accept: application/vnd.github.v3+json" \
             "${github_api_url}" )
         token=$(echo "$tokens" | ./jq -r '.token')
-        mkdir -p /workspace/gh-upload/files
-        echo $token > /workspace/gh-upload/files/github_token         
+        mkdir -p /workspace/releases/files
+        echo $token > /workspace/releases/files/github_token         
         pwd 
       env:
         - name: GH_APP_ID
@@ -61,12 +60,11 @@ spec:
         mv gh_2.32.1_linux_amd64/bin/gh /bin/gh 
         chmod +x /bin/gh 
         pwd
-        token=$(cat /workspace/gh-upload/files/github_token)
+        token=$(cat /workspace/releases/files/github_token)
         export GITHUB_TOKEN=$token
         cd /workspace/releases
-        ls -l 
         gh release create $REL_VER *.zip *.json *SHA256SUMS --repo $REPO
-        rm -f /workspace/gh-upload/files/github_token
+        rm -f /workspace/releases/files/github_token
       env:
         - name: REPO
           value: $(params.repo)

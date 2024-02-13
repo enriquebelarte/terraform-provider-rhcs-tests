@@ -421,7 +421,6 @@ spec:
         values:
         - "false"
       workspaces:
-      - name: gh-upload
       - name: releases
  
 
