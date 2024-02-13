@@ -370,8 +370,6 @@ spec:
       params:
       - name: IMAGE_URL
         value: $(tasks.build-container.results.IMAGE_URL)
-      - name: rel_ver
-        value: 1.0
       - name: repo
         value: https://github.com/enriquebelarte/terraform-provider-rhcs-tests
       - name: githubAppId
