@@ -422,6 +422,7 @@ spec:
         - "false"
       workspaces:
       - name: releases
+        workspace: workspace
  
 
     workspaces:
