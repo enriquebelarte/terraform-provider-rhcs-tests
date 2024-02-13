@@ -54,7 +54,7 @@ spec:
       script: |
         mkdir -p /workspace/releases/binaries
         cp /releases/* /workspace/releases/binaries/
-        cp /tmp/rel_ver > /workspace/releases/rel_ver
+        cp /tmp/rel_ver /workspace/releases/rel_ver
     - name: create-release-from-binaries
       image: ubi9:latest
       script: |
