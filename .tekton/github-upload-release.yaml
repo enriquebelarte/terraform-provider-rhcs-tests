@@ -54,7 +54,6 @@ spec:
       script: |
         mkdir -p /workspace/releases/binaries
         cp /releases/* /workspace/releases/binaries/
-        cp /tmp/rel_ver /workspace/releases/rel_ver
     - name: create-release-from-binaries
       image: ubi9:latest
       script: |
@@ -66,7 +65,7 @@ spec:
         token=$(cat /workspace/releases/files/github_token)
         export GITHUB_TOKEN=$token
         cd /workspace/releases/binaries
-        export REL_VER=$(cat /workspace/release/rel_ver)
+        export REL_VER=$(cat /workspace/releases/binaries/rel_ver)
         gh release create v"$REL_VER" *.zip *.json *SHA256SUMS --repo $REPO --title "Release v$REL_VER"
         rm -f /workspace/releases/files/github_token
       env:

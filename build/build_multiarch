@@ -5,7 +5,7 @@ archs=(amd64)
 oses=(linux)
 
 #REL_VER=$(git describe --tags --abbrev=0 | sed "s/v//")
-export REL_VER="1.1" && echo "$REL_VER" > /tmp/rel_ver
+export REL_VER="1.1" 
 if [[ -z "$REL_VER" ]]; then
     echo "Must provide version to prepare release" 1>&2
     exit 1
@@ -29,6 +29,7 @@ do
   done
 done
 sha256sum releases/*zip releases/terraform-provider-rhcs_${REL_VER}_manifest.json > releases/terraform-provider-rhcs_${REL_VER}_SHA256SUMS
+echo "$REL_VER" > releases/rel_ver
 }
 
 prepare_release
