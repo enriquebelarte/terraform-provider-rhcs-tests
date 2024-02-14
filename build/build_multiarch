@@ -5,7 +5,7 @@ archs=(amd64)
 oses=(linux)
 
 #REL_VER=$(git describe --tags --abbrev=0 | sed "s/v//")
-export REL_VER="1.1" 
+export REL_VER="1.2" 
 if [[ -z "$REL_VER" ]]; then
     echo "Must provide version to prepare release" 1>&2
     exit 1
